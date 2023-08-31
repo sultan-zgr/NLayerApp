@@ -8,17 +8,18 @@ namespace NLayer.API.Middlewares
 {
     public static class UseCustomExceptionHandler
     {
-        public static void UserCustomException (this IApplicationBuilder app) 
+        public static void UseCustomException (this IApplicationBuilder app) 
         {
             app.UseExceptionHandler(config =>
             config.Run(async context =>
             {
-                context.Response.ContentType = "application/json";
-                
-                var exceptionFeature = context.Features.Get<IExceptionHandlerFeature> ();
+                context.Response.ContentType = "application/json"; //   
+                var exceptionFeature = context.Features.Get<IExceptionHandlerFeature> (); //HATAYI ALIYORUM Hatayı alan interface IExceptionHandlerFeautre
+             
                 var statusCode = exceptionFeature.Error switch
                 {
-                    ClientSideException => 400,
+                    ClientSideException => 400,            //Hatanın apiden mi webden mi geldiğini ayırtmak için hata kodunu ayırıyorum
+                    NotFoundException => 404,
                     _ => 500
                 };
                 context.Response.StatusCode = statusCode;
